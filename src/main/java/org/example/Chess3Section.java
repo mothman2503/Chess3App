@@ -42,7 +42,7 @@ public class Chess3Section {
             }
             ret+="\n";
         }
-        ret+="\n   ";
+        ret+="   ";
         for(int i = 0; i<4; i++)
             ret+= x_axis[i] + "  " + (x_axis[i].length()>1?"":" ");
 /*

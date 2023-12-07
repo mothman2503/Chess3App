@@ -61,10 +61,17 @@ public class Bishop extends Piece
         ArrayList<Square> list = new ArrayList<>();
 
         list.addAll(this.board.topRightDiagonal(this.square));
+        System.out.print("topRight:");
+        System.out.println(list);
         list.addAll(this.board.topLeftDiagonal(this.square));
+        System.out.print("topLeft:");
+        System.out.println(list);
         list.addAll(this.board.bottomRightDiagonal(this.square));
+        System.out.print("bottomRight:");
+        System.out.println(list);
         list.addAll(this.board.bottomLeftDiagonal(this.square));
-
+        System.out.print("bottomLeft:");
+        System.out.println(list);
         return list;
     }
 }

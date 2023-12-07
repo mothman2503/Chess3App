@@ -10,36 +10,36 @@ public class Chess3Board {
 
         sections[0] = new Chess3Section(
                 new String[]{"4", "3", "2", "1"},
-                new String[]{"D", "C", "B", "A"},
+                new String[]{"d", "c", "b", "a"},
                 this
         );
 
         sections[1] = new Chess3Section(
-                new String[]{"E", "F", "G", "H"},
+                new String[]{"e", "f", "g", "h"},
                 new String[]{"4", "3", "2", "1"},
                 this
         );
 
         sections[2] = new Chess3Section(
                 new String[]{"9", "10", "11", "12"},
-                new String[]{"E", "F", "G", "H"},
+                new String[]{"e", "f", "g", "h"},
                 this
         );
 
         sections[3] = new Chess3Section(
-                new String[]{"I", "J", "K", "L"},
+                new String[]{"i", "j", "k", "l"},
                 new String[]{"9", "10", "11", "12"},
                 this
         );
 
         sections[4] = new Chess3Section(
                 new String[]{"5", "6", "7", "8"},
-                new String[]{"I", "J", "K", "L"},
+                new String[]{"i", "j", "k", "l"},
                 this
         );
 
         sections[5] = new Chess3Section(
-                new String[]{"D", "C", "B", "A"},
+                new String[]{"d", "c", "b", "a"},
                 new String[]{"5", "6", "7", "8"},
                 this
         );
@@ -103,21 +103,20 @@ public class Chess3Board {
     public void print(){
         for(int i = 0; i<6; i++){
             System.out.println(sections[i]);
-            System.out.println("\n\n");
+            System.out.println("\n");
         }
     }
 
     public Square squareAbove(Square square){
+        int height = Integer.parseInt(square.label.substring(1));
+        if(height == 1 || height == 8)
+            return  null;
         Square squareAbove = null;
         String alpha = "";
         alpha += square.label.charAt(0);
-        int height = Integer.parseInt(square.label.substring(1));
-        if(height == 8) {
-            return null;
-        }
         int newHeight = height;
         int change = (height>=5 && height<=8)?1:-1;
-        if(alpha.charAt(0)>='I' && height==9)
+        if(alpha.charAt(0)>='i' && height==9)
             return this.findSquare(alpha +"5");
 
         while(newHeight>0 && newHeight<13){
@@ -131,20 +130,20 @@ public class Chess3Board {
     }
 
     public Square squareBelow(Square square){
+        int height = Integer.parseInt(square.label.substring(1));
+        if(height==12)
+            return  null;
         Square squareBelow = null;
         String alpha = "";
         alpha += square.label.charAt(0);
-        int height = Integer.parseInt(square.label.substring(1));
-        if(height == 12)
-            return null;
         int newHeight = height;
-        int change = (alpha.charAt(0)>='I' && height<9)?-1:1;
-        if(alpha.charAt(0)<='D' && height>4)
+        int change = (alpha.charAt(0)>='i' && height<9)?-1:1;
+        if(alpha.charAt(0)<='d' && height>4)
             change = -1;
 
         while(newHeight>0 && newHeight<13){
             newHeight += change;
-            if(newHeight == 4 && alpha.charAt(0)>='I'){
+            if(newHeight == 4 && alpha.charAt(0)>='i'){
                 newHeight = 9;
             }
             if(this.findSquare(alpha+Integer.toString(newHeight))!=null){
@@ -156,13 +155,17 @@ public class Chess3Board {
     }
 
     public Square squareLeft(Square square){
+        if(square.label.charAt(0) == 'h')
+            return null;
+        if(square.label.charAt(0) == 'a' && square.label.charAt(1) > '4')
+            return null;
         Square squareLeft = null;
         char alpha = square.label.charAt(0);
         String height = square.label.substring(1);
-        int change = (Integer.parseInt(height)<5)?1:-1;
-        if(Integer.parseInt(height)>8 && alpha == 'I')
-            return this.findSquare('E'+height);
-        while(alpha>='A' && alpha<'M'){
+        int change = (Integer.parseInt(height)<5)?1:(alpha >= 'e')?1:-1;
+        if(Integer.parseInt(height)>8 && alpha == 'i')
+            return this.findSquare('e'+height);
+        while(alpha>='a' && alpha<'m'){
             alpha = (char) (alpha+change);
             if(this.findSquare(alpha+height)!=null){
                 squareLeft = this.findSquare(alpha+height);
@@ -173,13 +176,17 @@ public class Chess3Board {
     }
 
     public Square squareRight(Square square){
+        if(square.label.charAt(0) == 'l')
+            return null;
+        if(square.label.charAt(0) == 'a' && square.label.charAt(1) < '5')
+            return null;
         Square squareRight = null;
         char alpha = square.label.charAt(0);
         String height = square.label.substring(1);
         int change = (Integer.parseInt(height)<5)?-1:1;
-        if(Integer.parseInt(height)>8 && alpha == 'E')
-            return this.findSquare('I'+height);
-        while(alpha>='A' && alpha<'M'){
+        if(Integer.parseInt(height)>8 && alpha == 'e')
+            return this.findSquare('i'+height);
+        while(alpha>='a' && alpha<'m'){
             alpha = (char) (alpha+change);
             if(this.findSquare(alpha+height)!=null){
                 squareRight = this.findSquare(alpha+height);
@@ -191,17 +198,23 @@ public class Chess3Board {
 
     public ArrayList<Square> topLeftDiagonal(Square square){
         ArrayList<Square> list = new ArrayList<>();
-        list.add(square);
-        if(square.label.equals("I9")){
-            list.addAll(this.topLeftDiagonal(this.findSquare("E4")));
-            list.addAll(this.topLeftDiagonal(this.findSquare("D5")));
+        if(square.label.equals("i9")){
+            if(square.isEmpty()) {
+                list.add(this.findSquare("e4"));
+                list.addAll(this.topLeftDiagonal(this.findSquare("e4")));
+                list.add(this.findSquare("d5"));
+                list.addAll(this.topLeftDiagonal(this.findSquare("d5")));
+            }
             return list;
         }
         Square above = this.squareAbove(square);
         if(above!=null) {
             Square topLeft = this.squareLeft(above);
             if(topLeft!= null){
-                list.addAll(this.topLeftDiagonal(topLeft));
+                list.add(topLeft);
+                if(topLeft.isEmpty()){
+                    list.addAll(this.topLeftDiagonal(topLeft));
+                }
             }
         }
         return list;
@@ -209,28 +222,43 @@ public class Chess3Board {
 
     public ArrayList<Square> bottomLeftDiagonal(Square square){
         ArrayList<Square> list = new ArrayList<>();
-        list.add(square);
-        if(square.label.equals("D4")){
-            list.addAll(this.bottomLeftDiagonal(this.findSquare("E9")));
-            list.addAll(this.topRightDiagonal(this.findSquare("I5")));
+        if(square.label.equals("d4")){
+            if(square.isEmpty()) {
+                list.add(this.findSquare("e9"));
+                list.addAll(this.bottomLeftDiagonal(this.findSquare("e9")));
+                list.add(this.findSquare("i5"));
+                list.addAll(this.topRightDiagonal(this.findSquare("i5")));
+            }
             return list;
         }
-        if(square.label.equals("I5")){
-            list.addAll(this.bottomLeftDiagonal(this.findSquare("E9")));
-            list.addAll(this.topRightDiagonal(this.findSquare("D4")));
+        if(square.label.equals("i5")){
+            if(square.isEmpty()) {
+                list.add(this.findSquare("e9"));
+                list.addAll(this.bottomLeftDiagonal(this.findSquare("e9")));
+                list.add(this.findSquare("d4"));
+                list.addAll(this.topRightDiagonal(this.findSquare("d4")));
+            }
             return list;
         }
         Square below = this.squareBelow(square);
         if(below!=null) {
-            if(square.label.charAt(0)<='D'){
+            if(square.label.charAt(0)<='d' && (square.label.charAt(1)=='4' || square.label.charAt(1)=='5')){
                 Square bottomLeft = this.squareRight(below);
-                if(bottomLeft!=null)
-                    list.addAll(this.topRightDiagonal(bottomLeft));
+                if(bottomLeft!=null){
+                    list.add(bottomLeft);
+                    if(bottomLeft.isEmpty())
+                        list.addAll(this.topRightDiagonal(bottomLeft));
+                }
                 return list;
             }
             Square bottomLeft = this.squareLeft(below);
             if(bottomLeft!= null){
-                list.addAll(this.topLeftDiagonal(bottomLeft));
+                list.add(bottomLeft);
+                if(bottomLeft.isEmpty())
+                    list.addAll(this.bottomLeftDiagonal(bottomLeft));
+            }
+            else{
+                System.out.println("Square bottomLeft was null");
             }
         }
         return list;
@@ -238,17 +266,25 @@ public class Chess3Board {
 
     public ArrayList<Square> topRightDiagonal(Square square){
         ArrayList<Square> list = new ArrayList<>();
-        list.add(square);
-        if(square.label.equals("E9")){
-            list.addAll(this.topRightDiagonal(this.findSquare("D4")));
-            list.addAll(this.topRightDiagonal(this.findSquare("I5")));
+        if(square.label.equals("e9")){
+            if(square.isEmpty()) {
+                list.add(this.findSquare("d4"));
+                list.addAll(this.topRightDiagonal(this.findSquare("d4")));
+                list.add(this.findSquare("i5"));
+                list.addAll(this.topRightDiagonal(this.findSquare("i5")));
+            }
             return list;
         }
         Square above = this.squareAbove(square);
         if(above!=null) {
             Square topRight = this.squareRight(above);
             if(topRight!= null){
-                list.addAll(this.topLeftDiagonal(topRight));
+                list.add(topRight);
+                if(topRight.isEmpty())
+                    list.addAll(this.topRightDiagonal(topRight));
+            }
+            else{
+                System.out.println("Top right was null:" + above);
             }
         }
         return list;
@@ -256,28 +292,36 @@ public class Chess3Board {
 
     public ArrayList<Square> bottomRightDiagonal(Square square){
         ArrayList<Square> list = new ArrayList<>();
-        list.add(square);
-        if(square.label.equals("E4")){
-            list.addAll(this.bottomRightDiagonal(this.findSquare("I9")));
-            list.addAll(this.topLeftDiagonal(this.findSquare("D5")));
+        if(square.label.equals("e4")){
+            list.add(this.findSquare("i9"));
+            list.addAll(this.bottomRightDiagonal(this.findSquare("i9")));
+            list.add(this.findSquare("d5"));
+            list.addAll(this.topLeftDiagonal(this.findSquare("d5")));
             return list;
         }
-        if(square.label.equals("D5")){
-            list.addAll(this.bottomRightDiagonal(this.findSquare("I9")));
-            list.addAll(this.topLeftDiagonal(this.findSquare("E4")));
+        if(square.label.equals("d5")){
+            list.add(this.findSquare("i9"));
+            list.addAll(this.bottomRightDiagonal(this.findSquare("i9")));
+            list.add(this.findSquare("e4"));
+            list.addAll(this.topLeftDiagonal(this.findSquare("e4")));
             return list;
         }
         Square below = this.squareBelow(square);
         if(below!=null) {
-            if(square.label.charAt(0)<='D'){
+            if(square.label.charAt(0)<='d' && (square.label.charAt(1)=='4' || square.label.charAt(1)=='5')){
                 Square bottomRight = this.squareLeft(below);
-                if(bottomRight!=null)
-                    list.addAll(this.topLeftDiagonal(bottomRight));
+                if(bottomRight!=null) {
+                    list.add(bottomRight);
+                    if(bottomRight.isEmpty())
+                        list.addAll(this.topLeftDiagonal(bottomRight));
+                }
                 return list;
             }
             Square bottomRight = this.squareRight(below);
             if(bottomRight!= null){
-                list.addAll(this.topLeftDiagonal(bottomRight));
+                list.add(bottomRight);
+                if(bottomRight.isEmpty())
+                    list.addAll(this.bottomRightDiagonal(bottomRight));
             }
         }
         return list;

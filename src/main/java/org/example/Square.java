@@ -37,7 +37,7 @@ public class Square
         this.pozX = pozX;
         this.pozY = pozY;
         this.section = section;
-        if(label.charAt(0)>= 'A' &&label.charAt(0)<='L') {
+        if(label.charAt(0)>= 'a' &&label.charAt(0)<='l') {
             this.label = label;
         }
         else{
@@ -45,31 +45,12 @@ public class Square
         }
     }/*--endOf-Square--*/
 
-
-    Square(Square square)
-    {
-        this.pozX = square.pozX;
-        this.pozY = square.pozY;
-    }
-
-
-    public Square clone(Square square)
-    {
-        return new Square(square);
-    }
-
     void setPiece(Piece piece)
     {
         this.piece = piece;
         this.piece.square = this;
     }
 
-    public boolean atLeftEdge(){
-        return pozX == 0;
-    }
-    public boolean atRightEdge(){
-        return pozY == 0;
-    }
 
     public String toString(){
         return this.label;
@@ -79,7 +60,4 @@ public class Square
         return this.piece==null;
     }
 
-    public boolean isAtCenter(){
-        return pozX == 0 && pozY == 0;
-    }
 }

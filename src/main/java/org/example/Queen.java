@@ -114,7 +114,11 @@ public class Queen extends Piece
         }
 
         //------------- BISHOP BEHAVIOUR --------------
-        /*ToDo*/
+        list.addAll(this.board.topRightDiagonal(this.square));
+        list.addAll(this.board.topLeftDiagonal(this.square));
+        list.addAll(this.board.bottomRightDiagonal(this.square));
+        list.addAll(this.board.bottomLeftDiagonal(this.square));
+
         return list;
     }
 }
