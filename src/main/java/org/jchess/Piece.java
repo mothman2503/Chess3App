@@ -18,7 +18,7 @@
  * Othman and Janakan
  */
 
-package org.example;
+package org.jchess;
 
 
 import java.util.ArrayList;
@@ -30,7 +30,7 @@ Class to represent a piece (any kind) - this class should be extended to represe
 public abstract class Piece
 {
     Player player;
-    Chess3Board board; // <-- this relations isn't in class diagram, but it's necessary :/
+    Chess3Board board;
     public Square square;
     String name;
     protected String symbol;

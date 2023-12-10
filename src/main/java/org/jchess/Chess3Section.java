@@ -1,4 +1,4 @@
-package org.example;
+package org.jchess;
 
 public class Chess3Section {
     public Square[][] squares;//squares of chessboard

@@ -18,9 +18,8 @@
  * Mateusz Sławomir Lach ( matlak, msl )
  * Damian Marciniak
  */
-package org.example;
+package org.jchess;
 
-import java.awt.Image;
 import java.util.ArrayList;
 
 /**

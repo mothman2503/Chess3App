@@ -18,7 +18,7 @@
  * Mateusz Sławomir Lach ( matlak, msl )
  * Damian Marciniak
  */
-package org.example;
+package org.jchess;
 
 /**
  * Class to represent a chess board square
@@ -43,7 +43,11 @@ public class Square
         else{
             this.label = label.charAt(label.length()-1)+label.substring(0, label.length()-1);
         }
-    }/*--endOf-Square--*/
+    }
+
+    Square(String label){
+        this.label = label;
+    }
 
     void setPiece(Piece piece)
     {

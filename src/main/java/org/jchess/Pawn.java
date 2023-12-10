@@ -18,9 +18,8 @@
  * Mateusz Sławomir Lach ( matlak, msl )
  * Damian Marciniak
  */
-package org.example;
+package org.jchess;
 
-import java.awt.Image;
 import java.util.ArrayList;
 
 
@@ -70,18 +69,18 @@ public class Pawn extends Piece
 {
 
     boolean crossedBorder;
-    boolean down;
+    boolean started;
     public static short value = 1;
 
     Pawn(Chess3Board board, Player player)
     {
 
         super(board, player);
-        this.down = false; // Check if pawn has made first move
+        this.started = false; // Check if pawn has made first move
         this.crossedBorder = false;
         this.board = board;
         this.player = player;//this.setImages("Pawn-W.png", "Pawn-B.png");
-        this.symbol = "p";
+        this.symbol = "";
     }
 
     /**
@@ -100,7 +99,7 @@ public class Pawn extends Piece
             if(squareAbove.isEmpty()){
                 list.add(squareAbove);
                 Square nextStep = board.squareAbove(squareAbove);
-                if(nextStep.isEmpty()){
+                if(nextStep.isEmpty() && !this.started){
                     list.add(nextStep);
                 }
             }
@@ -114,9 +113,9 @@ public class Pawn extends Piece
             }
         }
         else{
-            if(player.color == Player.colors.RED && this.square.label.charAt(1)=='5')
+            if(player.color == Player.colors.RED && this.square.label.charAt(1)=='4')
                 crossedBorder = true;
-            if(player.color == Player.colors.BLACK && this.square.label.charAt(1)=='4')
+            if(player.color == Player.colors.BLACK && this.square.label.charAt(1)=='5')
                 crossedBorder = true;
 
             if(crossedBorder){
@@ -138,7 +137,7 @@ public class Pawn extends Piece
                 if (squareBelow.isEmpty()) {
                     list.add(squareBelow);
                     Square nextStep = board.squareBelow(squareBelow);
-                    if(nextStep.isEmpty()){
+                    if(nextStep.isEmpty() && !this.started){
                         list.add(nextStep);
                     }
                 }
@@ -155,7 +154,6 @@ public class Pawn extends Piece
 
         return list;
     }
-
     void promote(Piece newPiece)
     {
         throw new UnsupportedOperationException("Not supported yet.");

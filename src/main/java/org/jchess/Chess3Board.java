@@ -1,4 +1,4 @@
-package org.example;
+package org.jchess;
 
 import java.util.ArrayList;
 
@@ -64,7 +64,7 @@ public class Chess3Board {
 
     public void setPieces(Player player){
         int section1/*Queen's Side*/, section2/*King's Side*/;
-        if(player.color == Player.colors.RED){
+        if(player.color == Player.colors.BLACK){
             section1 = 0;
             section2 = 1;
         }
@@ -325,6 +325,12 @@ public class Chess3Board {
             }
         }
         return list;
+    }
+
+    public void makeMove(Move move){
+        this.findSquare(move.to.label).setPiece(this.findSquare(move.from.label).piece);
+        this.findSquare(move.from.label).piece = null;
+
     }
 
 
