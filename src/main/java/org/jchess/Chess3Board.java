@@ -183,7 +183,7 @@ public class Chess3Board {
         Square squareRight = null;
         char alpha = square.label.charAt(0);
         String height = square.label.substring(1);
-        int change = (Integer.parseInt(height)<5)?-1:1;
+        int change = (Integer.parseInt(height)<5)?-1:(alpha >= 'e')?-1:1;
         if(Integer.parseInt(height)>8 && alpha == 'e')
             return this.findSquare('i'+height);
         while(alpha>='a' && alpha<'m'){
