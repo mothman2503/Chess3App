@@ -48,201 +48,60 @@ public class Knight extends Piece
     @Override
     public ArrayList allMoves()
     {
-        ArrayList list = new ArrayList();
-/*
+        ArrayList<Square> list = new ArrayList();
+        Square up=this.board.squareAbove(this.square);
+        Square down=this.board.squareBelow(this.square);
+        Square left=this.board.squareLeft(this.square);
+        Square right=this.board.squareRight(this.square);
 
-        // knight all moves
-        //  _______________ Y:
-        // |_|_|_|_|_|_|_|_|7
-        // |_|_|_|_|_|_|_|_|6
-        // |_|_|2|_|3|_|_|_|5
-        // |_|1|_|_|_|4|_|_|4
-        // |_|_|_|K|_|_|_|_|3
-        // |_|8|_|_|_|5|_|_|2
-        // |_|_|7|_|6|_|_|_|1
-        // |_|_|_|_|_|_|_|_|0
-        //X:0 1 2 3 4 5 6 7
-        //
-
-        int newX, newY;
-
-        //1
-        newX = this.square.pozX - 2;
-        newY = this.square.pozY + 1;
-
-        if (!isout(newX, newY) && checkPiece(newX, newY))
+        if(this.board.findSquare(up.label)!=null)
         {
-            if (this.player.color == Player.colors.white) //white
+            Square up2=this.board.squareAbove(up);
+            if(this.board.findSquare(up2.label)!=null)
             {
-                if (this.chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[newX][newY]))
-                {
-                    list.add(chessboard.squares[newX][newY]);
+                if(this.board.squareRight(up2)!=null)
+                    list.add(this.board.squareRight(up2));
+                if (this.board.squareLeft(up2)!=null)
+                    list.add(this.board.squareLeft(up2));
+
+            }
+            Square r1=this.board.squareRight(up);
+            if(r1!=null) {
+                if (this.board.squareRight(r1) != null) {
+                    System.out.println(r1.label);
+                    System.out.println(this.board.squareRight(r1).label);
+                    list.add(this.board.squareRight(r1));
+                    // System.out.println(this.board.squareRight(this.board.squareRight(up)).label);
                 }
             }
-            else //or black
-            {
-                if (this.chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[newX][newY]))
-                {
-                    list.add(chessboard.squares[newX][newY]);
-                }
+            if(this.board.squareLeft(this.board.squareLeft(up))!=null) {
+                Square l1=this.board.squareLeft(up);
+                // System.out.println(l1.label);
+                 //.add(this.board.squareLeft(l1));
             }
         }
 
-        //2
-        newX = this.square.pozX - 1;
-        newY = this.square.pozY + 2;
-
-        if (!isout(newX, newY) && checkPiece(newX, newY))
+       /*
+        else if(this.board.findSquare(down.label)!=null)
         {
-            if (this.player.color == Player.colors.white) //white
-            {
-                if (this.chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[newX][newY]))
-                {
-                    list.add(chessboard.squares[newX][newY]);
-                }
-            }
-            else //or black
-            {
-                if (this.chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[newX][newY]))
-                {
-                    list.add(chessboard.squares[newX][newY]);
-                }
-            }
+
+        }
+        else if(this.board.findSquare(left.label)!=null)
+        {
+
+        }
+        else if (this.board.findSquare(left.label)!=null)
+        {
+
         }
 
-        //3
-        newX = this.square.pozX + 1;
-        newY = this.square.pozY + 2;
 
-        if (!isout(newX, newY) && checkPiece(newX, newY))
-        {
-            if (this.player.color == Player.colors.white) //white
-            {
-                if (this.chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[newX][newY]))
-                {
-                    list.add(chessboard.squares[newX][newY]);
-                }
-            }
-            else //or black
-            {
-                if (this.chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[newX][newY]))
-                {
-                    list.add(chessboard.squares[newX][newY]);
-                }
-            }
-        }
-
-        //4
-        newX = this.square.pozX + 2;
-        newY = this.square.pozY + 1;
-
-        if (!isout(newX, newY) && checkPiece(newX, newY))
-        {
-            if (this.player.color == Player.colors.white) //white
-            {
-                if (this.chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[newX][newY]))
-                {
-                    list.add(chessboard.squares[newX][newY]);
-                }
-            }
-            else //or black
-            {
-                if (this.chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[newX][newY]))
-                {
-                    list.add(chessboard.squares[newX][newY]);
-                }
-            }
-        }
-
-        //5
-        newX = this.square.pozX + 2;
-        newY = this.square.pozY - 1;
-
-        if (!isout(newX, newY) && checkPiece(newX, newY))
-        {
-            if (this.player.color == Player.colors.white) //white
-            {
-                if (this.chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[newX][newY]))
-                {
-                    list.add(chessboard.squares[newX][newY]);
-                }
-            }
-            else //or black
-            {
-                if (this.chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[newX][newY]))
-                {
-                    list.add(chessboard.squares[newX][newY]);
-                }
-            }
-        }
-
-        //6
-        newX = this.square.pozX + 1;
-        newY = this.square.pozY - 2;
-
-        if (!isout(newX, newY) && checkPiece(newX, newY))
-        {
-            if (this.player.color == Player.colors.white) //white
-            {
-                if (this.chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[newX][newY]))
-                {
-                    list.add(chessboard.squares[newX][newY]);
-                }
-            }
-            else //or black
-            {
-                if (this.chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[newX][newY]))
-                {
-                    list.add(chessboard.squares[newX][newY]);
-                }
-            }
-        }
-
-        //7
-        newX = this.square.pozX - 1;
-        newY = this.square.pozY - 2;
-
-        if (!isout(newX, newY) && checkPiece(newX, newY))
-        {
-            if (this.player.color == Player.colors.white) //white
-            {
-                if (this.chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[newX][newY]))
-                {
-                    list.add(chessboard.squares[newX][newY]);
-                }
-            }
-            else //or black
-            {
-                if (this.chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[newX][newY]))
-                {
-                    list.add(chessboard.squares[newX][newY]);
-                }
-            }
-        }
-
-        //8
-        newX = this.square.pozX - 2;
-        newY = this.square.pozY - 1;
-
-        if (!isout(newX, newY) && checkPiece(newX, newY))
-        {
-            if (this.player.color == Player.colors.white) //white
-            {
-                if (this.chessboard.kingWhite.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[newX][newY]))
-                {
-                    list.add(chessboard.squares[newX][newY]);
-                }
-            }
-            else //or black
-            {
-                if (this.chessboard.kingBlack.willBeSafeWhenMoveOtherPiece(this.square, chessboard.squares[newX][newY]))
-                {
-                    list.add(chessboard.squares[newX][newY]);
-                }
-            }
-        }
+        public boolean isInSection(int sectionNumber){
+            return this.board.sections[sectionNumber].findSquare(this.square.label)!=null;
+    }
 */
-
+        System.out.println(list);
         return list;
     }
-}
+    }
+
