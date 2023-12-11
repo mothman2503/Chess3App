@@ -71,13 +71,13 @@ public class Knight extends Piece
                     System.out.println(r1.label);
                     System.out.println(this.board.squareRight(r1).label);
                     list.add(this.board.squareRight(r1));
-                    // System.out.println(this.board.squareRight(this.board.squareRight(up)).label);
+                    System.out.println(this.board.squareRight(this.board.squareRight(up)).label);
                 }
             }
             if(this.board.squareLeft(this.board.squareLeft(up))!=null) {
                 Square l1=this.board.squareLeft(up);
                 // System.out.println(l1.label);
-                 //.add(this.board.squareLeft(l1));
+                 list.add(this.board.squareLeft(l1));
             }
         }
 
