@@ -1,0 +1,51 @@
+name: CI with Maven
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up oracle jdk 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'oracle'
+          java-version: 17
+
+      - name: Maven Version Check
+        run: mvn --version
+
+      # - name: Install Maven 3.8.1
+      #   run: |
+      #     wget https://apache.osuosl.org/maven/maven-3/3.8.1/binaries/apache-maven-3.8.1-bin.tar.gz
+      #     tar xzvf apache-maven-3.8.1-bin.tar.gz
+      #     export PATH=$PWD/apache-maven-3.8.1/bin:$PATH
+      #     mvn --version  # Check Maven version
+
+      - name: Import SSL Certificates
+        run: |
+          echo -n | openssl s_client -connect repo.maven.apache.org:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > maven.crt
+          keytool -import -alias maven -file maven.crt -keystore $JAVA_HOME/lib/security/cacerts -storepass changeit -noprompt
+
+      - name: Clean
+        run: |
+          mvn clean
+
+      - name: Copy missed dependency
+        run: |
+          sudo cp javaws.jar /opt/hostedtoolcache/Java_Oracle_jdk/17/x64/lib/
+      
+      - name: Package
+        run: |
+          mvn package
+
+      - name: Runnig application
+        run: |
+          java -jar target/Chess3App-0.0.1-SNAPSHOT.jar
